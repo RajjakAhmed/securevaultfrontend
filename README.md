@@ -1,73 +1,82 @@
-# React + TypeScript + Vite
+# 🔐 SecureVault Frontend (React + TypeScript)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, secure, encrypted file vault frontend built with **React**, **TypeScript**, and **Tailwind CSS**, designed to work with the SecureVault backend API.
 
-Currently, two official plugins are available:
+Users can:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+✅ Register & Login  
+✅ Upload encrypted files securely  
+✅ View personal vault files  
+✅ Download decrypted files  
+✅ Delete files safely  
+✅ Logout securely  
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 🖼️ Preview
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+> Modern Secure Dashboard UI
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- Premium dark theme  
+- Glassmorphism cards  
+- Secure vault experience  
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+![alt text](image.png)
+![alt text](image-1.png)
+---
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## ⚙️ Tech Stack
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+| Technology | Usage |
+|----------|--------|
+| **React + TypeScript** | Frontend framework |
+| **Vite** | Fast development build tool |
+| **Tailwind CSS** | Modern responsive UI |
+| **Fetch API** | Backend communication |
+| **JWT Auth** | Secure login session |
+| **Supabase Storage** | Encrypted file storage |
+| **Render Deployment** | Backend hosting |
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+---
+
+## ✨ Features
+
+### 🔑 Authentication
+- User Register
+- User Login
+- JWT token stored securely in localStorage
+- Logout functionality
+
+### 📂 Vault Dashboard
+- Upload files with encryption
+- View uploaded files list
+- Download decrypted files securely
+- Delete files permanently
+
+### 🎨 Modern UI
+- Premium dark mode design
+- Responsive layout
+- Clean industry-style dashboard
+
+---
+
+## 📁 Folder Structure
+
+```bash
+src/
+ ┣ api/
+ ┃ ┣ auth.ts
+ ┃ ┗ files.ts
+ ┣ pages/
+ ┃ ┣ Login.tsx
+ ┃ ┣ Register.tsx
+ ┃ ┗ Dashboard.tsx
+ ┣ components/
+ ┃ ┣ UploadBox.tsx
+ ┃ ┗ FileList.tsx
+ ┣ config.ts
+ ┣ App.tsx
+ ┗ main.tsx
