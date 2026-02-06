@@ -22,7 +22,7 @@ export default function UploadBox({
     setUploading(false);
     onUploadSuccess();
 
-    alert("File uploaded securely ✅🔐");
+    alert("File uploaded securely ");
   }
 
   return (

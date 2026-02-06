@@ -37,7 +37,7 @@ export default function Register() {
         className="bg-white/10 backdrop-blur-lg p-8 rounded-2xl shadow-xl w-[380px]"
       >
         <h1 className="text-3xl font-bold text-white mb-6">
-          Create Account ✨
+          Create Account 
         </h1>
 
         <input
