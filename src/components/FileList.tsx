@@ -42,36 +42,45 @@ export default function FileList({ refreshKey }: { refreshKey: number }) {
     setFiles(files.filter((f) => f.id !== id));
   }
 
-return (
-  <div className="space-y-4">
-    {files.map((file) => (
-      <div
-        key={file.id}
-        className="flex justify-between items-center p-4 rounded-xl
-        bg-black/30 border border-white/10 hover:bg-black/50 transition"
-      >
-        <span className="truncate max-w-[200px] text-white font-medium">
-          {file.filename}
-        </span>
+  return (
+    <div className="w-full max-w-lg mt-10">
+      <h2 className="text-2xl font-bold mb-4">Your Vault Files 📂</h2>
 
-        <div className="flex gap-2">
-          <button
-            onClick={() => handleDownload(file.id, file.filename)}
-            className="px-3 py-1 rounded-lg bg-green-500 hover:bg-green-600 text-sm"
-          >
-            Download
-          </button>
+      {/* ✅ Loading properly used */}
+      {loading ? (
+        <p className="text-gray-400">Loading files...</p>
+      ) : files.length === 0 ? (
+        <p className="text-gray-500">No files uploaded yet.</p>
+      ) : (
+        <div className="space-y-4">
+          {files.map((file) => (
+            <div
+              key={file.id}
+              className="flex justify-between items-center bg-white/10 border border-white/20 rounded-xl p-4"
+            >
+              <span className="truncate max-w-[200px]">
+                {file.filename}
+              </span>
 
-          <button
-            onClick={() => handleDelete(file.id)}
-            className="px-3 py-1 rounded-lg bg-red-500 hover:bg-red-600 text-sm"
-          >
-            Delete
-          </button>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => handleDownload(file.id, file.filename)}
+                  className="bg-green-500 px-3 py-1 rounded-lg text-sm"
+                >
+                  Download
+                </button>
+
+                <button
+                  onClick={() => handleDelete(file.id)}
+                  className="bg-red-500 px-3 py-1 rounded-lg text-sm"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
-      </div>
-    ))}
-  </div>
-);
-
+      )}
+    </div>
+  );
 }
