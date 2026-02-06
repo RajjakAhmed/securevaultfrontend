@@ -4,12 +4,12 @@ A modern, secure, encrypted file vault frontend built with **React**, **TypeScri
 
 Users can:
 
-✅ Register & Login  
-✅ Upload encrypted files securely  
-✅ View personal vault files  
-✅ Download decrypted files  
-✅ Delete files safely  
-✅ Logout securely  
+Register & Login  
+Upload encrypted files securely  
+View personal vault files  
+Download decrypted files  
+Delete files safely  
+Logout securely  
 
 ---
 
