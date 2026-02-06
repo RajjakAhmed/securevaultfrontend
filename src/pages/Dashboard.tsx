@@ -13,15 +13,16 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-950 via-black to-gray-900 text-white flex">
+    <div className="min-h-screen bg-gradient-to-br from-gray-950 via-black to-gray-900 text-white flex flex-col md:flex-row">
 
-      {/* ✅ Sidebar */}
-      <aside className="w-[260px] bg-white/5 border-r border-white/10 p-6 flex flex-col">
-        <h1 className="text-3xl font-extrabold tracking-tight mb-10">
+      {/* Sidebar */}
+      <aside className="w-full md:w-[260px] bg-white/5 border-b md:border-b-0 md:border-r border-white/10 p-6 flex flex-col">
+        <h1 className="text-3xl font-extrabold tracking-tight mb-6 md:mb-10 text-center md:text-left">
           🔐 Secure<span className="text-blue-400">Vault</span>
         </h1>
 
-        <nav className="space-y-4 text-gray-300">
+        {/* Navigation */}
+        <nav className="space-y-3 text-gray-300 flex flex-col">
           <button className="w-full text-left px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 transition">
             📂 My Vault
           </button>
@@ -35,25 +36,25 @@ export default function Dashboard() {
           </button>
         </nav>
 
-        {/* Logout */}
+        {/* Logout Button */}
         <button
           onClick={handleLogout}
-          className="mt-auto bg-red-500 hover:bg-red-600 py-2 rounded-xl font-semibold transition"
+          className="mt-6 md:mt-auto bg-red-500 hover:bg-red-600 py-2 rounded-xl font-semibold transition"
         >
           Logout
         </button>
       </aside>
 
-      {/*  Main Dashboard */}
-      <main className="flex-1 p-10">
+      {/* Main Dashboard */}
+      <main className="flex-1 p-5 sm:p-8 md:p-10">
 
         {/* Header */}
-        <div className="flex justify-between items-center mb-10">
+        <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-6 mb-10">
           <div>
-            <h2 className="text-4xl font-bold">
+            <h2 className="text-3xl sm:text-4xl font-bold">
               Welcome back 👋
             </h2>
-            <p className="text-gray-400 mt-2">
+            <p className="text-gray-400 mt-2 text-sm sm:text-base">
               Your encrypted vault is safe and ready.
             </p>
           </div>
@@ -62,34 +63,38 @@ export default function Dashboard() {
           <input
             type="text"
             placeholder="Search files..."
-            className="px-4 py-2 rounded-xl bg-white/10 border border-white/10 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="w-full md:w-[280px] px-4 py-2 rounded-xl bg-white/10 border border-white/10 focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-3 gap-6 mb-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
           <div className="bg-white/10 rounded-2xl p-6 shadow-lg border border-white/10">
             <h3 className="text-gray-400 text-sm">Total Files</h3>
-            <p className="text-3xl font-bold mt-2">📁Vault</p>
+            <p className="text-2xl sm:text-3xl font-bold mt-2">📁 Vault</p>
           </div>
 
           <div className="bg-white/10 rounded-2xl p-6 shadow-lg border border-white/10">
             <h3 className="text-gray-400 text-sm">Encryption</h3>
-            <p className="text-3xl font-bold mt-2">AES-256 🔐</p>
+            <p className="text-2xl sm:text-3xl font-bold mt-2">
+              AES-256 🔐
+            </p>
           </div>
 
           <div className="bg-white/10 rounded-2xl p-6 shadow-lg border border-white/10">
             <h3 className="text-gray-400 text-sm">Cloud Storage</h3>
-            <p className="text-3xl font-bold mt-2">Supabase ☁️</p>
+            <p className="text-2xl sm:text-3xl font-bold mt-2">
+              Supabase ☁️
+            </p>
           </div>
         </div>
 
         {/* Upload + File List */}
-        <div className="grid grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
 
           {/* Upload Section */}
-          <div className="bg-white/10 backdrop-blur-xl border border-white/10 rounded-2xl p-8 shadow-xl">
-            <h3 className="text-xl font-bold mb-4">
+          <div className="bg-white/10 backdrop-blur-xl border border-white/10 rounded-2xl p-6 sm:p-8 shadow-xl">
+            <h3 className="text-lg sm:text-xl font-bold mb-4">
               Upload Secure File ⬆
             </h3>
             <UploadBox
@@ -98,8 +103,8 @@ export default function Dashboard() {
           </div>
 
           {/* File List Section */}
-          <div className="bg-white/10 backdrop-blur-xl border border-white/10 rounded-2xl p-8 shadow-xl">
-            <h3 className="text-xl font-bold mb-4">
+          <div className="bg-white/10 backdrop-blur-xl border border-white/10 rounded-2xl p-6 sm:p-8 shadow-xl">
+            <h3 className="text-lg sm:text-xl font-bold mb-4">
               Your Vault Files 📂
             </h3>
             <FileList refreshKey={refreshKey} />
@@ -109,4 +114,3 @@ export default function Dashboard() {
     </div>
   );
 }
-
