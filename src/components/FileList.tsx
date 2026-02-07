@@ -47,7 +47,6 @@ export default function FileList({ refreshKey }: { refreshKey: number }) {
     if (!window.confirm("Delete this file permanently?")) return;
 
     await deleteFile(id);
-
     setFiles((prev) => prev.filter((f) => f.id !== id));
   }
 
@@ -66,44 +65,84 @@ export default function FileList({ refreshKey }: { refreshKey: number }) {
   }
 
   return (
-    <div className="w-full max-w-lg mt-10">
-      <h2 className="text-2xl font-bold mb-4">Your Vault Files 📂</h2>
+    <div className="w-full space-y-4">
+      {/* Loading */}
+      {loading && (
+        <p className="text-gray-400 text-sm animate-pulse">
+          Loading your vault files...
+        </p>
+      )}
 
-      {loading ? (
-        <p className="text-gray-400">Loading files...</p>
-      ) : files.length === 0 ? (
-        <p className="text-gray-500">No files uploaded yet.</p>
-      ) : (
+      {/* Empty */}
+      {!loading && files.length === 0 && (
+        <div className="text-center py-10 text-gray-500">
+          <p className="text-lg">📂 No files uploaded yet</p>
+          <p className="text-sm mt-2">
+            Upload your first encrypted file to get started.
+          </p>
+        </div>
+      )}
+
+      {/* File List */}
+      {!loading && files.length > 0 && (
         <div className="space-y-4">
           {files.map((file) => (
             <div
               key={file.id}
-              className="flex justify-between items-center bg-white/10 border border-white/20 rounded-xl p-4"
+              className="
+                flex flex-col sm:flex-row sm:items-center sm:justify-between
+                gap-4 bg-white/5 border border-white/10 
+                rounded-2xl px-5 py-4
+                hover:bg-white/10 hover:border-blue-400/40
+                transition duration-300 group
+              "
             >
-              <span className="truncate max-w-[200px]">
-                {file.filename}
-              </span>
+              {/* File Info */}
+              <div className="flex flex-col">
+                <p className="font-semibold text-white truncate max-w-[220px] sm:max-w-[260px]">
+                  {file.filename}
+                </p>
+                <p className="text-xs text-gray-500 mt-1">
+                  Encrypted File • SecureVault Storage
+                </p>
+              </div>
 
-              <div className="flex gap-2">
+              {/* Actions */}
+              <div className="flex flex-wrap gap-2 sm:justify-end">
+                {/* Download */}
                 <button
                   onClick={() => handleDownload(file.id, file.filename)}
-                  className="bg-green-500 px-3 py-1 rounded-lg text-sm"
+                  className="
+                    px-4 py-2 rounded-xl text-sm font-medium
+                    bg-green-500/15 text-green-300
+                    hover:bg-green-500/25 transition
+                  "
                 >
-                  Download
+                    Download
                 </button>
 
-                <button
-                  onClick={() => handleDelete(file.id)}
-                  className="bg-red-500 px-3 py-1 rounded-lg text-sm"
-                >
-                  Delete
-                </button>
-
+                {/* Share */}
                 <button
                   onClick={() => handleShare(file.id)}
-                  className="bg-blue-500 px-3 py-1 rounded-lg text-sm"
+                  className="
+                    px-4 py-2 rounded-xl text-sm font-medium
+                    bg-blue-500/15 text-blue-300
+                    hover:bg-blue-500/25 transition
+                  "
                 >
-                  Share
+                  🔗 Share
+                </button>
+
+                {/* Delete */}
+                <button
+                  onClick={() => handleDelete(file.id)}
+                  className="
+                    px-4 py-2 rounded-xl text-sm font-medium
+                    bg-red-500/15 text-red-300
+                    hover:bg-red-500/25 transition
+                  "
+                >
+                   Delete
                 </button>
               </div>
             </div>
@@ -111,31 +150,47 @@ export default function FileList({ refreshKey }: { refreshKey: number }) {
         </div>
       )}
 
-      {/* ✅ Modal OUTSIDE map */}
+      {/* Share Modal */}
       {showModal && (
-        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-xl w-[350px] text-center">
-            <h2 className="text-xl font-bold mb-3">Share File 🔗</h2>
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 px-4">
+          <div
+            className="
+              bg-gray-950 border border-white/10 
+              rounded-2xl shadow-2xl 
+              max-w-md w-full p-6 text-center
+              animate-fadeIn
+            "
+          >
+            <h2 className="text-2xl font-bold mb-2 text-white">
+              Share File 🔗
+            </h2>
 
-            <p className="text-sm text-gray-600 mb-2">
-              Link copied to clipboard ✅
+            <p className="text-sm text-gray-400 mb-4">
+              Link copied to your clipboard 
             </p>
 
+            {/* Share Link */}
             <a
               href={shareUrl}
               target="_blank"
-              className="text-blue-600 underline break-all"
+              rel="noreferrer"
+              className="text-blue-400 underline break-all text-sm"
             >
               {shareUrl}
             </a>
 
-            <div className="flex justify-center mt-4">
+            {/* QR Code */}
+            <div className="flex justify-center mt-6 bg-white p-4 rounded-xl">
               <QRCodeCanvas value={shareUrl} size={180} />
             </div>
 
+            {/* Close */}
             <button
               onClick={() => setShowModal(false)}
-              className="mt-5 px-4 py-2 bg-black text-white rounded-lg"
+              className="
+                mt-6 w-full py-2 rounded-xl font-semibold
+                bg-white/10 hover:bg-white/20 transition
+              "
             >
               Close
             </button>
