@@ -51,18 +51,37 @@ export default function FileList({ refreshKey }: { refreshKey: number }) {
   }
 
   // Share file
+// Share file (with password + unlock time)
   async function handleShare(fileId: string) {
     const expiry = prompt("Enter expiry time in minutes (e.g. 10)");
-
     if (!expiry) return;
 
-    const data = await generateShareLink(fileId, Number(expiry));
+    // ✅ Ask password (optional)
+    const password = prompt(
+      "Set a password (leave empty for public link)"
+    );
 
-    setShareUrl(data.shareUrl);
+    // ✅ Ask unlock minutes (default 2)
+    const unlock = prompt(
+      "Unlock validity in minutes after password verification (default 2)"
+    );
+
+    const unlockMinutes = unlock ? Number(unlock) : 2;
+
+    // ✅ Send all values to backend
+    const data = await generateShareLink(
+      fileId,
+      Number(expiry),
+      password || "",
+      unlockMinutes
+    );
+    const frontendShareUrl = `${window.location.origin}/share/${data.shareUrl.split("/").pop()}`;
+    setShareUrl(frontendShareUrl);
     setShowModal(true);
 
     navigator.clipboard.writeText(data.shareUrl);
   }
+
 
   return (
     <div className="w-full space-y-4">

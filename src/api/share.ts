@@ -2,7 +2,9 @@ import { API_URL } from "../config";
 
 export async function generateShareLink(
   fileId: string,
-  expiryMinutes: number
+  expiryMinutes: number,
+  password?: string,
+  unlockMinutes?: number
 ) {
   const token = localStorage.getItem("token");
 
@@ -12,7 +14,13 @@ export async function generateShareLink(
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ expiryMinutes }),
+
+    // ✅ Send all fields
+    body: JSON.stringify({
+      expiryMinutes,
+      password: password || "",
+      unlockMinutes: unlockMinutes || 2,
+    }),
   });
 
   return res.json();

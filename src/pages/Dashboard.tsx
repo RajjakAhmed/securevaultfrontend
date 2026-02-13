@@ -15,24 +15,47 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-950 via-black to-gray-900 text-white flex flex-col md:flex-row">
 
-      {/* Sidebar */}
+    {/* Sidebar */}
     <aside
       className="w-full md:w-[240px] bg-white/5 border-b md:border-b-0 md:border-r 
-      border-white/10 p-6 flex flex-row md:flex-col items-center md:items-start justify-between"
+      border-white/10 p-6 flex flex-row md:flex-col items-center md:items-start justify-between md:justify-start gap-6"
     >
       {/* Logo */}
       <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight">
         Secure<span className="text-blue-400">Vault</span>
       </h1>
 
+      {/* Navigation Buttons */}
+      <div className="flex flex-row md:flex-col gap-3 w-full">
+
+        {/* Dashboard Button */}
+        <button
+          onClick={() => navigate("/dashboard")}
+          className="w-full px-4 py-2 rounded-xl font-semibold text-sm
+          bg-white/10 hover:bg-white/20 transition"
+        >
+          📂 My Files
+        </button>
+
+        {/* Activity Logs Button */}
+        <button
+          onClick={() => navigate("/activity")}
+          className="w-full px-4 py-2 rounded-xl font-semibold text-sm
+          bg-blue-500/20 text-blue-300 hover:bg-blue-500/30 transition"
+        >
+          📜 Activity Logs
+        </button>
+      </div>
+
       {/* Logout */}
       <button
         onClick={handleLogout}
-        className="bg-red-500 hover:bg-red-600 px-5 py-2 rounded-xl font-semibold transition"
+        className="w-full bg-red-500 hover:bg-red-600 px-5 py-2 rounded-xl font-semibold transition"
       >
         Logout
       </button>
     </aside>
+
 
       {/* Main */}
       <main className="flex-1 p-6 sm:p-8 md:p-10 space-y-10">

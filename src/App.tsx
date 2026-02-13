@@ -2,6 +2,11 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./pages/login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
+import ShareDownload from "./pages/Sharedownloadr";
+import ActivityLogs from "./pages/Activitylogs";
+
+
+
 
 export default function App() {
   return (
@@ -11,6 +16,9 @@ export default function App() {
           <Route path="/" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/share/:token" element={<ShareDownload />} />
+          <Route path="/activity" element={<ActivityLogs />} />
+
         </Routes>
       </BrowserRouter>
     </div>
