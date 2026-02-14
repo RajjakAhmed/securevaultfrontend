@@ -17,7 +17,7 @@ export default function Dashboard() {
 
     {/* Sidebar */}
     <aside
-      className="w-full md:w-[240px] bg-white/5 border-b md:border-b-0 md:border-r 
+      className="w-full md:w-[260px] bg-white/5 border-b md:border-b-0 md:border-r 
       border-white/10 p-6 flex flex-row md:flex-col items-center md:items-start justify-between md:justify-start gap-6"
     >
       {/* Logo */}
@@ -25,32 +25,34 @@ export default function Dashboard() {
         Secure<span className="text-blue-400">Vault</span>
       </h1>
 
-      {/* Navigation Buttons */}
+      {/* Navigation */}
       <div className="flex flex-row md:flex-col gap-3 w-full">
-
-        {/* Dashboard Button */}
         <button
           onClick={() => navigate("/dashboard")}
-          className="w-full px-4 py-2 rounded-xl font-semibold text-sm
-          bg-white/10 hover:bg-white/20 transition"
+          className="w-full text-left px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 transition"
         >
-          📂 My Files
+          📂 My Vault
         </button>
 
-        {/* Activity Logs Button */}
         <button
           onClick={() => navigate("/activity")}
-          className="w-full px-4 py-2 rounded-xl font-semibold text-sm
-          bg-blue-500/20 text-blue-300 hover:bg-blue-500/30 transition"
+          className="w-full text-left px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 transition"
         >
-          📜 Activity Logs
+          📑 Activity Logs
+        </button>
+
+        <button
+          onClick={() => navigate("/teams")}
+          className="w-full text-left px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 transition"
+        >
+          👥 Team Vaults
         </button>
       </div>
 
       {/* Logout */}
       <button
         onClick={handleLogout}
-        className="w-full bg-red-500 hover:bg-red-600 px-5 py-2 rounded-xl font-semibold transition"
+        className="w-full bg-red-500 hover:bg-red-600 px-5 py-2 rounded-xl font-semibold transition mt-auto"
       >
         Logout
       </button>

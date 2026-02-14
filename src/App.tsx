@@ -4,7 +4,7 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import ShareDownload from "./pages/Sharedownloadr";
 import ActivityLogs from "./pages/Activitylogs";
-
+import Teams from "./pages/Team";
 
 
 
@@ -18,6 +18,7 @@ export default function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/share/:token" element={<ShareDownload />} />
           <Route path="/activity" element={<ActivityLogs />} />
+          <Route path="/teams" element={<Teams />} />
 
         </Routes>
       </BrowserRouter>
