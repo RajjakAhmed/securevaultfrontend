@@ -7,81 +7,106 @@ export default function Dashboard() {
   const [refreshKey, setRefreshKey] = useState(0);
   const navigate = useNavigate();
 
+  const [menuOpen, setMenuOpen] = useState(false);
+
   function handleLogout() {
     localStorage.removeItem("token");
-    navigate("/");
+    navigate("/login");
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-950 via-black to-gray-900 text-white flex flex-col md:flex-row">
+    <div className="min-h-screen bg-[#020617] text-slate-100">
 
-    {/* Sidebar */}
-    <aside
-      className="w-full md:w-[260px] bg-white/5 border-b md:border-b-0 md:border-r 
-      border-white/10 p-6 flex flex-row md:flex-col items-center md:items-start justify-between md:justify-start gap-6"
-    >
-      {/* Logo */}
-      <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight">
-        Secure<span className="text-blue-400">Vault</span>
-      </h1>
+      {/* ================= TOP NAVBAR ================= */}
+      <header className="sticky top-0 z-50 bg-slate-900/40 backdrop-blur-xl border-b border-white/10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
 
-      {/* Navigation */}
-      <div className="flex flex-row md:flex-col gap-3 w-full">
-        <button
-          onClick={() => navigate("/dashboard")}
-          className="w-full text-left px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 transition"
-        >
-          📂 My Vault
-        </button>
+          {/* Logo */}
+          <h1 className="text-xl sm:text-2xl font-extrabold tracking-tight">
+            Secure<span className="text-indigo-400">Vault</span>
+          </h1>
 
-        <button
-          onClick={() => navigate("/activity")}
-          className="w-full text-left px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 transition"
-        >
-          📑 Activity Logs
-        </button>
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center gap-3">
 
-        <button
-          onClick={() => navigate("/teams")}
-          className="w-full text-left px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 transition"
-        >
-          👥 Team Vaults
-        </button>
-      </div>
+            <NavButton
+              label="Audit Logs"
+              onClick={() => navigate("/activity")}
+            />
 
-      {/* Logout */}
-      <button
-        onClick={handleLogout}
-        className="w-full bg-red-500 hover:bg-red-600 px-5 py-2 rounded-xl font-semibold transition mt-auto"
-      >
-        Logout
-      </button>
-    </aside>
+            <NavButton
+              label="Team Vaults"
+              onClick={() => navigate("/teams")}
+            />
 
+            <LogoutButton onClick={handleLogout} />
+          </nav>
 
-      {/* Main */}
-      <main className="flex-1 p-6 sm:p-8 md:p-10 space-y-10">
+          {/* Mobile Menu Toggle */}
+          <button
+            onClick={() => setMenuOpen(!menuOpen)}
+            className="
+              md:hidden px-4 py-2 rounded-2xl
+              bg-slate-900/40 border border-white/10
+              text-slate-200
+              hover:bg-slate-800/50
+              hover:border-indigo-400/30
+              hover:shadow-[0_0_18px_rgba(99,102,241,0.25)]
+              transition-all duration-300
+            "
+          >
+            Menu
+          </button>
+        </div>
 
-        {/* Header */}
+        {/* Mobile Dropdown Menu */}
+        {menuOpen && (
+          <div className="md:hidden px-4 sm:px-6 pb-5 flex flex-col gap-3">
+
+            <NavButton
+              label="Audit Logs"
+              onClick={() => navigate("/activity")}
+            />
+
+            <NavButton
+              label="Team Vaults"
+              onClick={() => navigate("/teams")}
+            />
+
+            <LogoutButton onClick={handleLogout} full />
+          </div>
+        )}
+      </header>
+
+      {/* ================= MAIN DASHBOARD ================= */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-10 space-y-10">
+
+        {/* Heading */}
         <div>
-          <h2 className="text-3xl sm:text-4xl font-bold">
-            Welcome back 👋
+          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
+            Secure File Vault
           </h2>
-          <p className="text-gray-400 mt-2 text-sm sm:text-base">
-            Upload, encrypt, share and manage your secure vault files.
+
+          <p className="text-slate-400 mt-2 text-sm sm:text-base max-w-2xl">
+            Upload, encrypt, and manage your private files securely inside your
+            personal vault.
           </p>
         </div>
 
-        {/* Upload + File List */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Upload + Files Layout */}
+        <section className="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-          {/* Upload */}
+          {/* Upload Panel */}
           <div
-            className="bg-white/10 backdrop-blur-xl border border-white/10 
-            rounded-2xl p-6 sm:p-8 shadow-xl hover:shadow-blue-500/10 transition"
+            className="
+              lg:col-span-1
+              bg-slate-900/50 backdrop-blur-xl
+              border border-white/10 rounded-3xl
+              p-6 sm:p-8 shadow-xl
+            "
           >
-            <h3 className="text-lg sm:text-xl font-bold mb-4">
-                Upload your file here
+            <h3 className="text-lg font-semibold text-indigo-300 mb-4">
+              Upload File
             </h3>
 
             <UploadBox
@@ -89,80 +114,100 @@ export default function Dashboard() {
             />
           </div>
 
-          {/* Files */}
+          {/* Vault Files Panel */}
           <div
-            className="bg-white/10 backdrop-blur-xl border border-white/10 
-            rounded-2xl p-6 sm:p-8 shadow-xl hover:shadow-purple-500/10 transition"
+            className="
+              lg:col-span-2
+              bg-slate-900/50 backdrop-blur-xl
+              border border-white/10 rounded-3xl
+              p-6 sm:p-8 shadow-xl
+            "
           >
-
+            <h3 className="text-lg font-semibold text-slate-200 mb-5">
+              Vault Files
+            </h3>
 
             <FileList refreshKey={refreshKey} />
           </div>
-        </div>
-
-        {/* Bottom Project Info Card */}
-        <div
-          className="rounded-3xl border border-white/10 bg-gradient-to-r 
-          from-blue-500/10 via-purple-500/10 to-pink-500/10 
-          p-6 sm:p-10 shadow-xl"
-        >
-          <h3 className="text-2xl sm:text-3xl font-bold mb-6 animate-pulse">
-             SecureVault Project Highlights
-          </h3>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-
-            <div
-              className="p-6 rounded-2xl bg-white/5 hover:bg-white/10 
-              transition hover:scale-105 duration-300"
-            >
-              <h4 className="text-lg font-semibold mb-2">
-                End-to-End Encryption
-              </h4>
-              <p className="text-gray-400 text-sm">
-                Every file is encrypted before storage for maximum privacy.
-              </p>
-            </div>
-
-            <div
-              className="p-6 rounded-2xl bg-white/5 hover:bg-white/10 
-              transition hover:scale-105 duration-300"
-            >
-              <h4 className="text-lg font-semibold mb-2">
-                AES-256 Protection
-              </h4>
-              <p className="text-gray-400 text-sm">
-                Industry-standard AES-256 encryption keeps your vault secure.
-              </p>
-            </div>
-
-            <div
-              className="p-6 rounded-2xl bg-white/5 hover:bg-white/10 
-              transition hover:scale-105 duration-300"
-            >
-              <h4 className="text-lg font-semibold mb-2">
-                Secure File Sharing
-              </h4>
-              <p className="text-gray-400 text-sm">
-                Share files safely using QR codes and protected download links.
-              </p>
-            </div>
-          </div>
-        </div>
+        </section>
 
         {/* Footer */}
-        <footer className="text-center text-gray-500 text-sm pt-6 border-t border-white/10">
-          Made by{" "}
+        <footer className="text-center text-slate-500 text-sm pt-6 border-t border-white/10">
+          Built by{" "}
           <a
             href="https://www.linkedin.com/in/rajjak-ahmed-abb1a1219/"
             target="_blank"
             rel="noreferrer"
-            className="text-blue-400 hover:text-blue-300 font-semibold transition"
+            className="text-indigo-400 hover:text-indigo-300 font-semibold transition"
           >
             Rajjak Ahmed
           </a>
         </footer>
       </main>
     </div>
+  );
+}
+
+/* ================= NAV BUTTON ================= */
+function NavButton({
+  label,
+  onClick,
+}: {
+  label: string;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className="
+        px-5 py-2 rounded-2xl
+        bg-slate-900/40 border border-white/10
+        text-slate-200 font-medium
+
+        hover:text-white
+        hover:border-indigo-400/40
+        hover:bg-slate-800/50
+
+        hover:shadow-[0_0_18px_rgba(99,102,241,0.25)]
+        hover:-translate-y-[1px]
+
+        active:translate-y-0
+        transition-all duration-300
+      "
+    >
+      {label}
+    </button>
+  );
+}
+
+/* ================= LOGOUT BUTTON ================= */
+function LogoutButton({
+  onClick,
+  full = false,
+}: {
+  onClick: () => void;
+  full?: boolean;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className={`
+        ${full ? "w-full" : ""}
+        px-5 py-2 rounded-2xl
+        bg-red-500/10 border border-red-400/20
+        text-red-300 font-medium
+
+        hover:bg-red-500/20
+        hover:border-red-400/40
+        hover:text-red-200
+
+        hover:shadow-[0_0_18px_rgba(239,68,68,0.25)]
+        hover:-translate-y-[1px]
+
+        transition-all duration-300
+      `}
+    >
+      Logout
+    </button>
   );
 }

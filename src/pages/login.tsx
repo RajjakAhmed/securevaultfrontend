@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import { Eye, EyeOff } from "lucide-react";
 import { API_URL } from "../config";
 
 export default function Login() {
@@ -8,8 +10,13 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const [showPass, setShowPass] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [shake, setShake] = useState(false);
+
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
+    setLoading(true);
 
     const res = await fetch(`${API_URL}/api/auth/login`, {
       method: "POST",
@@ -23,84 +30,163 @@ export default function Login() {
 
     if (res.ok) {
       localStorage.setItem("token", data.token);
-      alert("Login successful ");
-      navigate("/dashboard");
+
+      // Redirect support
+      const params = new URLSearchParams(window.location.search);
+      const redirect = params.get("redirect");
+
+      setTimeout(() => {
+        navigate(redirect || "/dashboard");
+      }, 600);
     } else {
-      alert(data.message || "Login failed ");
+      setLoading(false);
+
+      // Shake animation on error
+      setShake(true);
+      setTimeout(() => setShake(false), 500);
+
+      alert(data.message || "Login failed ❌");
     }
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-950 via-black to-gray-900 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-[#030712] relative overflow-hidden px-6">
 
-      {/* Login Card */}
-      <form
+  {/* ⭐ Aurora Vault Background */}
+  <div className="absolute inset-0 bg-[#030712]" />
+
+  {/* Aurora Glow */}
+  <div className="absolute inset-0">
+    <div
+      className="absolute -top-40 left-1/2 h-[520px] w-[950px]
+      -translate-x-1/2 rounded-full
+      bg-gradient-to-r from-indigo-500/30 via-cyan-400/20 to-purple-600/30
+      blur-[170px]"
+    />
+  </div>
+
+  {/* Subtle Star Grid Texture */}
+  <div
+    className="absolute inset-0 opacity-10
+    bg-[radial-gradient(circle_at_top,#ffffff_1px,transparent_1px)]
+    bg-[size:70px_70px]"
+  />
+
+      {/* ================= LOGIN CARD ================= */}
+      <motion.form
         onSubmit={handleLogin}
-        className="w-full max-w-md bg-white/10 backdrop-blur-xl border border-white/10 
-        p-8 rounded-3xl shadow-2xl"
+        initial={{ opacity: 0, y: 40 }}
+        animate={{
+          opacity: 1,
+          y: 0,
+          rotate: shake ? [0, 2, -2, 2, 0] : 0,
+        }}
+        transition={{ duration: 0.6 }}
+        className="relative w-full max-w-md bg-slate-900/40 backdrop-blur-xl border border-white/10 shadow-2xl rounded-3xl p-10 overflow-hidden"
       >
-        {/* Logo Heading */}
-        <h1 className="text-4xl font-extrabold text-center mb-2">
-          <span className="text-white">Secure</span>
-          <span className="text-blue-400">Vault</span>
+        {/* 🔦 Scanline Entrance */}
+        <motion.div
+          initial={{ y: -200, opacity: 0 }}
+          animate={{ y: 450, opacity: [0, 1, 0] }}
+          transition={{ duration: 1.6 }}
+          className="absolute left-0 top-0 w-full h-[2px] bg-indigo-400/70 blur-sm"
+        />
+
+        {/* Logo */}
+        <h1 className="text-4xl font-extrabold text-center tracking-tight">
+          Secure<span className="text-indigo-400">Vault</span>
         </h1>
 
-        <p className="text-gray-400 text-sm text-center mb-8">
+        <p className="text-slate-400 text-sm text-center mt-2 mb-10">
           Login to access your encrypted vault
         </p>
 
-        {/* Email */}
-        <div className="mb-4">
-          <label className="text-sm text-gray-300 block mb-2">
-            Email Address
-          </label>
-          <input
-            type="email"
-            placeholder="you@example.com"
-            className="w-full p-3 rounded-xl bg-black/40 text-white 
-            border border-white/10 focus:outline-none focus:ring-2 
-            focus:ring-blue-400 transition"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
+        {/* ================= EMAIL FIELD ================= */}
+        <FloatingInput
+          label="Email Address"
+          type="email"
+          value={email}
+          setValue={setEmail}
+        />
 
-        {/* Password */}
-        <div className="mb-6">
-          <label className="text-sm text-gray-300 block mb-2">
-            Password
-          </label>
-          <input
-            type="password"
-            placeholder="••••••••"
-            className="w-full p-3 rounded-xl bg-black/40 text-white 
-            border border-white/10 focus:outline-none focus:ring-2 
-            focus:ring-blue-400 transition"
+        {/* ================= PASSWORD FIELD ================= */}
+        <div className="relative mt-6">
+          <FloatingInput
+            label="Password"
+            type={showPass ? "text" : "password"}
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            setValue={setPassword}
           />
+
+          {/* Eye Toggle */}
+          <button
+            type="button"
+            onClick={() => setShowPass(!showPass)}
+            className="absolute right-4 top-5 text-slate-400 hover:text-white transition"
+          >
+            {showPass ? <EyeOff size={18} /> : <Eye size={18} />}
+          </button>
         </div>
 
-        {/* Button */}
+        {/* ================= BUTTON ================= */}
         <button
           type="submit"
-          className="w-full py-3 rounded-xl font-semibold text-white 
-          bg-blue-500 hover:bg-blue-600 transition shadow-lg shadow-blue-500/20"
+          disabled={loading}
+          className={`w-full mt-8 py-3 rounded-xl font-semibold text-white 
+          bg-indigo-600 hover:bg-indigo-500 transition-all
+          shadow-[0_0_20px_rgba(79,70,229,0.4)]
+          ${loading && "animate-pulse"}`}
         >
-          Login
+          {loading ? "Unlocking Vault..." : "Login →"}
         </button>
 
-        {/* Footer Link */}
-        <p className="text-gray-400 text-sm mt-6 text-center">
+        {/* ================= REGISTER LINK ================= */}
+        <p className="text-slate-400 text-sm mt-6 text-center">
           New user?{" "}
           <Link
             to="/register"
-            className="text-blue-400 hover:text-blue-300 font-semibold transition"
+            className="text-indigo-400 hover:text-indigo-300 font-semibold transition"
           >
             Create account →
           </Link>
         </p>
-      </form>
+      </motion.form>
+    </div>
+  );
+}
+
+/* ================= FLOATING INPUT COMPONENT ================= */
+function FloatingInput({
+  label,
+  type,
+  value,
+  setValue,
+}: {
+  label: string;
+  type: string;
+  value: string;
+  setValue: (v: string) => void;
+}) {
+  return (
+    <div className="relative w-full">
+      <input
+        type={type}
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        placeholder=" "
+        className="peer w-full px-4 pt-6 pb-2 rounded-xl bg-black/20 border border-white/10 
+        text-white focus:outline-none focus:border-indigo-500/70 transition"
+      />
+
+      {/* Floating Label */}
+      <label
+        className="absolute left-4 top-4 text-slate-400 text-sm 
+        peer-placeholder-shown:top-5 peer-placeholder-shown:text-base 
+        peer-placeholder-shown:text-slate-500
+        peer-focus:top-3 peer-focus:text-sm peer-focus:text-indigo-400 transition-all"
+      >
+        {label}
+      </label>
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import { getAuditLogs } from "../api/audit";
 
 export default function ActivityLogs() {
@@ -13,13 +14,10 @@ export default function ActivityLogs() {
         setError("");
 
         const data = await getAuditLogs();
-
-        console.log("AUDIT RESPONSE:", data);
-
         setLogs(data.logs || []);
       } catch (err) {
         console.error("Audit fetch failed:", err);
-        setError("Failed to load activity logs ❌");
+        setError("Failed to load activity logs.");
       } finally {
         setLoading(false);
       }
@@ -29,76 +27,100 @@ export default function ActivityLogs() {
   }, []);
 
   return (
-    <div className="w-full">
-      {/* Heading */}
-      <h2 className="text-2xl font-bold text-white mb-6">
-         Activity Logs
-      </h2>
+    <div className="min-h-screen bg-[#020617] text-slate-100 px-4 sm:px-6 py-10">
+      {/* ================= HEADER ================= */}
+      <div className="max-w-5xl mx-auto space-y-2 mb-10">
+        <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
+          Audit Logs
+        </h2>
 
-      {/* Loading */}
-      {loading && (
-        <p className="text-gray-400 animate-pulse">
-          Loading activity...
+        <p className="text-slate-400 text-sm sm:text-base max-w-2xl">
+          Every encrypted vault event is recorded here for traceability and
+          security monitoring.
         </p>
-      )}
+      </div>
 
-      {/* Error */}
-      {!loading && error && (
-        <p className="text-red-400">{error}</p>
-      )}
+      {/* ================= CONTENT PANEL ================= */}
+      <div className="max-w-5xl mx-auto bg-slate-900/50 backdrop-blur-xl border border-white/10 rounded-3xl shadow-xl overflow-hidden">
 
-      {/* Empty */}
-      {!loading && logs.length === 0 && !error && (
-        <p className="text-gray-500">
-          No activity recorded yet.
-        </p>
-      )}
+        {/* Loading */}
+        {loading && (
+          <div className="p-6 text-slate-400 animate-pulse">
+            Loading audit stream...
+          </div>
+        )}
 
-      {/* Logs */}
-      <div className="space-y-4">
-        {logs.map((log) => (
-          <div
-            key={log.id}
-            className="
-              p-5 rounded-2xl
-              bg-white/5 border border-white/10
-              hover:bg-white/10 transition
-            "
-          >
-            {/* Action */}
-            <p className="font-semibold text-blue-300 text-lg">
-              {log.action}
-            </p>
+        {/* Error */}
+        {!loading && error && (
+          <div className="p-6 text-red-300 border-l-4 border-red-500/40 bg-red-500/5">
+            {error}
+          </div>
+        )}
 
-            {/* File Info */}
-            <p className="text-sm text-gray-300 mt-2">
-               File:{" "}
-              <span className="text-white font-medium">
-                {log.file?.filename || "Unknown File"}
-              </span>
-            </p>
-
-            {/* File ID */}
-            {log.file?.id && (
-              <p className="text-xs text-gray-500 mt-1 break-all">
-                File ID: {log.file.id}
-              </p>
-            )}
-
-            {/* IP Address */}
-            <p className="text-sm text-gray-400 mt-2">
-              IP Address:{" "}
-              <span className="text-gray-200">
-                {log.ipAddress || "Unknown"}
-              </span>
-            </p>
-
-            {/* Timestamp */}
-            <p className="text-xs text-gray-500 mt-2">
-              {new Date(log.createdAt).toLocaleString()}
+        {/* Empty */}
+        {!loading && logs.length === 0 && !error && (
+          <div className="p-10 text-center text-slate-500">
+            <p className="text-lg font-medium">No activity recorded yet.</p>
+            <p className="text-sm mt-2">
+              Logs will appear once users upload, download, or share files.
             </p>
           </div>
-        ))}
+        )}
+
+        {/* ================= LOG STREAM ================= */}
+        {!loading && logs.length > 0 && (
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={{
+              visible: {
+                transition: {
+                  staggerChildren: 0.05,
+                },
+              },
+            }}
+            className="divide-y divide-white/5"
+          >
+            {logs.map((log) => (
+              <motion.div
+                key={log.id}
+                variants={{
+                  hidden: { opacity: 0, y: 8 },
+                  visible: { opacity: 1, y: 0 },
+                }}
+                className="
+                  px-6 py-5 flex flex-col sm:flex-row sm:items-center sm:justify-between
+                  hover:bg-white/5 transition
+                "
+              >
+                {/* Left Side: Action + File */}
+                <div className="space-y-1">
+                  <p className="text-indigo-300 font-semibold text-sm sm:text-base">
+                    {log.action}
+                  </p>
+
+                  <p className="text-slate-400 text-sm">
+                    File:{" "}
+                    <span className="text-slate-100 font-medium">
+                      {log.file?.filename || "Unknown File"}
+                    </span>
+                  </p>
+
+                  {log.ipAddress && (
+                    <p className="text-xs text-slate-500">
+                      IP: {log.ipAddress}
+                    </p>
+                  )}
+                </div>
+
+                {/* Right Side: Timestamp */}
+                <div className="mt-3 sm:mt-0 text-xs text-slate-500">
+                  {new Date(log.createdAt).toLocaleString()}
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        )}
       </div>
     </div>
   );
